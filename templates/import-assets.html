@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% set active_page = "import" %}
+{% block content %}
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/datatables.css') }}">  
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+
+
+
+<div class="container theme-showcase" role="main">
+
+      <div class="page-header">
+        <br>
+        <h1>Client Assets</h1>
+      </div>
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron2">
+	<br>
+<table id="table_id" style="padding: 5px;" class="display">
+    <thead>
+        <tr>
+            <th>Value</th>
+            <th>Type</th>
+			<th>Parent Asset</th>
+			<th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>127.0.0.1</td>
+            <td>IPv4 Address</td>
+			<td>127.0.0.0/24</td>
+			<td>Sample Data</td>
+        </tr>
+        <tr>
+            <td>192.168.0.1</td>
+            <td>IPv4 Address</td>
+			<td>192.168.0.0/24</td>
+			<td>Sample Data</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+      <p>
+	  <br>
+	  <h4>Upload Data</h4>
+<form method=POST enctype=multipart/form-data action="{{ url_for('upload_json') }}">
+      
+		<input type=file name="data" id="data" onchange="this.form.submit()">
+		<label for="data" class="btn btn-lg btn-default">Upload JSON</label>
+</form>
+<form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
+		<input type=file name="raw_data" id="raw_data" onchange="this.form.submit()">
+        <label for="raw_data" class="btn btn-lg btn-default">Upload RAW</label>
+</form> 
+
+	  </p>
+<script>
+$(document).ready( function () {
+	$('#table_id').DataTable( {
+		data: {{ data|safe }},
+		columns: [
+			{ data: "value" },
+			{ data: "type" },
+			{ data: "parent_asset" },
+			{ temp: "N/A" }
+		]}
+	);
+} );
+</script>
+
+{% endblock %}
